@@ -1,0 +1,23 @@
+Connections between the Raspberry pi pico w and the peripherals of the v2 prototype:
+
+Stepper motor drivers:
+D1 	– 2		left front motor direction
+S1 	– 3		left front motor step
+D2 	– 4		right front motor direction
+S2 	– 5		right front motor step
+D1 	– 6		left back motor direction
+S1 	– 7		left back motor step
+D2 	– 8		right back motor direction
+S2 	– 9		right back motor step
+
+Shift register:
+O 	– 18		latch out
+S 	– 19		shift on
+I 	– 20		shift input
+
+
+Line sensors:
+L0 	– A2		right
+L1 	– A1		middle
+L2 	– A0		left
+VCC 	– 3.3v
