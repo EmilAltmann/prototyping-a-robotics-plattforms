@@ -1,0 +1,32 @@
+;
+; Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+;
+; SPDX-License-Identifier: BSD-3-Clause
+;
+
+.program motors
+//    set pindirs, 0b1111   ; Set pin to output
+    
+loopForward:
+    set pins, 0b1000 [31]
+    set pins, 0b1100 [31]
+    set pins, 0b0100 [31]
+    set pins, 0b0110 [31]
+    set pins, 0b0010 [31]
+    set pins, 0b0011 [31]
+    set pins, 0b0001 [31]
+    set pins, 0b1001 [30]
+    jmp loopForward
+    
+loopBackward:
+    set pins, 0b1001 [31]
+    set pins, 0b0001 [31]
+    set pins, 0b0011 [31]
+    set pins, 0b0010 [31]
+    set pins, 0b0110 [31]
+    set pins, 0b0100 [31]
+    set pins, 0b1100 [31]
+    set pins, 0b1000 [30]
+	jmp loopBackward
+
+

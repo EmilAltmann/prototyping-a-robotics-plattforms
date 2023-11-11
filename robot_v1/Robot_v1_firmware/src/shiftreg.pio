@@ -1,0 +1,215 @@
+/*
+ * Copyright (c) 2022 Gerhard Schiller
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ * https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
+ */
+ 
+ /// heavily edited for two 74hc5095 shift registers connected to two 7 segment led displays.
+
+; ------------------------------------------------------------------------
+; SN74xx585 (and similar) Shift-Register Interface
+;
+; Modify "NUM_DEVICES" and (possibly) "SHIFT_CLK" to match your hardware!
+;
+; A complete transmision takes ("NUM_DEVICES" * 8 * 2) + 6 "SHIFT_CLK" cycle.
+; ------------------------------------------------------------------------
+
+.program shiftreg
+
+.define NUM_DEVICES 2	; count of devices in daisy-chain: 1 ... 4
+
+; DO NOT MODIFY defines below, unless you know what you are doing!
+.define LATCH_HIGH 0b0110
+.define LATCH_LOW  0b0010
+
+.define loopctr 	((NUM_DEVICES * 8) - 1)
+
+; we shift out rigth to left (MSB first), so we must set unused bits to 0.
+.define discardsbits (32 - (NUM_DEVICES * 8))
+
+.side_set 1 opt
+
+pull         					; Load a 32-bit word from the TX FIFO into the OSR, or stall
+set x, loopctr      			; Preload bit counter
+out null,discardsbits 			; discard unused high bits
+
+bitloop:                   		; This loop will run NUM_DEVICES*8 times
+out pins, 1 side 0        		; Shift 1 bit from OSR to the first pin: "PIN_DATA"
+	jmp x-- bitloop side 1
+set pins, LATCH_LOW side 0 				; Bring data and clock low line at end of data
+
+; Latch pulse. Transfer data from shift register to output buffer
+set pins, LATCH_HIGH 			; Latch high (data and clock still low)
+set pins, LATCH_LOW 			; Latch low (data and clock remain low)
+
+
+% c-sdk {
+#include "hardware/clocks.h"
+
+#define sr_RIGHTSIDE 8
+
+#define sr_0 0b01110111
+#define sr_1 0b01000001
+#define sr_2 0b00111011
+#define sr_3 0b01100011
+#define sr_4 0b01001101
+#define sr_5 0b01101110
+#define sr_6 0b01111110
+#define sr_7 0b01000011
+#define sr_8 0b01111111
+#define sr_9 0b01101111
+
+#define sr_A 0b01011111
+#define sr_B 0b01111100
+#define sr_C 0b00110110
+#define sr_D 0b01111001
+#define sr_E 0b00111110
+#define sr_F 0b00011110
+
+#define sr_G 0b01110110
+#define sr_H 0b01011100
+#define sr_I 0b01000000
+#define sr_J 0b01110001
+#define sr_K 0b01011110 //suboptimal
+#define sr_L 0b00110100
+#define sr_M 0b01010111 //suboptimal
+#define sr_N 0b01011000
+#define sr_O 0b01111000
+#define sr_P 0b00011111
+#define sr_Q 0b01001111
+#define sr_R 0b00011000
+#define sr_S 0b01101110
+#define sr_T 0b00010110 //suboptimal
+#define sr_U 0b01110000
+#define sr_V 0b01110100 //suboptimal
+#define sr_W 0b01110101 //suboptimal
+#define sr_X 0b01011101
+#define sr_Y 0b00011101
+#define sr_Z 0b00111011
+
+#define sr_DOT  0b10000000
+#define sr_ALL  0b11111111
+#define sr_NONE 0b00000000
+
+static uint16_t paniclight[] = {
+	0b0000010000000000,
+	0b0000100000000000,
+	0b0001000000000000,
+	0b0000000001000000,
+	0b0000000000001000,
+	0b0000000000000001
+	};
+
+#define sr_PANICLIGHT_PERIOD 6
+	
+static uint16_t pauselight[] = {
+	0b0000001000000000,
+	0b0000000100000000,
+	0b0100000000000000,
+	0b0010000000000000,
+	0b0000000000100000,
+	0b0000000000010000,
+	0b0000000000000100,
+	0b0000000000000010,
+	};
+	
+#define sr_PAUSELIGHT_PERIOD 8
+	
+static uint16_t jumplight[] = {
+	0b0000001000000000,
+	0b0000000100000000,
+	0b0100000000000000,
+	0b0010000000000000,
+	0b0001000000000000,
+	0b0000010000000000,
+	0b0000000000000001,
+	0b0000000001000000,
+	0b0000000000100000,
+	0b0000000000010000,
+	0b0000000000000100,
+	0b0000000000000010,
+	0b0000000000000001,
+	0b0000000001000000,
+	0b0001000000000000,
+	0b0000010000000000
+};
+
+#define sr_JUMPLGHT_PERIOD 16
+	
+#define sr_LEFT   0b0000000000010100
+#define sr_MIDDLE 0b0001010001000001
+#define sr_RIGHT  0b0100000100000000
+
+
+#define PIN_DATA  14 //0001
+#define PIN_LATCH 16 //0100
+#define PIN_CLK   17 //1000
+#define sm2 2
+
+const uint32_t SHIFT_CLK  = 100 * 1000;	// 100 kHz
+
+static uint32_t registerState = 0;
+
+void shiftreg_clear();
+
+void shiftreg_init() {
+	const uint pin_base = PIN_DATA;
+
+	// Tell PIO to initially drive output-low on the selected pin, then map PIO
+	// onto that pin with the IO muxes.
+	pio_sm_set_pins_with_mask(pio0, sm2, 0b1111u, 0b1111u << pin_base);
+	pio_sm_set_consecutive_pindirs(pio0, sm2, pin_base, 4, true/*output*/);
+	for(uint i=0;i<4;i++)
+		pio_gpio_init(pio0, pin_base+i);
+	//pio_gpio_init(pio0, pin_base+0); //DATA
+	//pio_gpio_init(pio0, pin_base+2); //LCLK
+	//pio_gpio_init(pio0, pin_base+3); //SRCLK
+
+	//printf("can put code for Shiftreg: %u",pio_can_add_program(pio0, &shiftreg_program));
+	uint shiftreg_offset = pio_add_program(pio0, &shiftreg_program);	
+	//printf(" with offset: %u\n",shiftreg_offset);
+	pio_sm_config conf2 = shiftreg_program_get_default_config(shiftreg_offset);
+
+	// OUT shifts to left, no autopull
+	sm_config_set_out_shift(&conf2, false, false, 32);
+
+	sm_config_set_out_pins(&conf2, pin_base, 1);
+	sm_config_set_sideset_pins(&conf2, pin_base + 3);	   // pins to use in SIDE instr
+
+	sm_config_set_set_pins(&conf2, pin_base + 0, 4);   // pins to use in SET instr
+
+	float div = (float)clock_get_hz(clk_sys) / (SHIFT_CLK * 2);
+	sm_config_set_clkdiv(&conf2, div);
+
+	pio_sm_init(pio0, sm2, shiftreg_offset, &conf2);
+
+	pio_sm_clear_fifos(pio0, sm2);
+	pio_sm_set_enabled(pio0, sm2, true);
+	
+	shiftreg_clear();
+}
+
+void shiftreg_send(uint32_t data) {
+	if (registerState != data) {
+		while (pio_sm_is_tx_fifo_full(pio0,sm2)) {
+			;
+		}
+		registerState = data;
+		pio_sm_put_blocking(pio0, sm2, data);
+	}
+}
+
+void shiftreg_clear() {
+
+	shiftreg_send(0x00000000);
+
+	/* //doesnt work
+	pio_sm_set_enabled(pio0, sm2, false);
+	pio_sm_clear_fifos(pio0, sm2);
+	pio_sm_set_pins_with_mask(pio0, sm2, 0b0000u, 0b1111u << PIN_DATA);
+	pio_sm_set_pins_with_mask(pio0, sm2, 0b1111u, 0b1111u << PIN_DATA);
+	pio_sm_set_enabled(pio0, sm2, true);
+	*/
+}
+
+%}
