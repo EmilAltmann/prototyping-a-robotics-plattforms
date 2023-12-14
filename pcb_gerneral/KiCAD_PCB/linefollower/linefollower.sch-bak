@@ -1,0 +1,257 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Connection ~ 3900 3350
+Wire Wire Line
+	3900 3450 3900 3350
+Wire Wire Line
+	3300 3450 3900 3450
+Connection ~ 3900 2550
+Connection ~ 3900 1750
+Wire Wire Line
+	3900 1850 3900 1750
+Wire Wire Line
+	3300 1850 3900 1850
+Wire Wire Line
+	3850 2550 3900 2550
+Wire Wire Line
+	3400 3350 3400 3950
+Connection ~ 3400 3350
+Wire Wire Line
+	3550 3350 3400 3350
+Wire Wire Line
+	3400 3150 3400 3350
+Connection ~ 3400 3150
+Wire Wire Line
+	3400 2550 3400 3150
+Wire Wire Line
+	3550 3150 3400 3150
+Connection ~ 3400 2550
+Wire Wire Line
+	3400 2350 3400 1750
+Connection ~ 3400 2350
+Wire Wire Line
+	3550 2350 3400 2350
+Wire Wire Line
+	3400 1750 3550 1750
+Wire Wire Line
+	3550 3950 3400 3950
+Wire Wire Line
+	4500 2350 4500 2550
+Connection ~ 4500 2350
+Wire Wire Line
+	4350 2350 4500 2350
+Wire Wire Line
+	4500 2550 4500 3150
+Connection ~ 4500 2550
+Wire Wire Line
+	4500 3150 4500 3350
+Connection ~ 4500 3150
+Wire Wire Line
+	4350 3150 4500 3150
+Wire Wire Line
+	4500 3350 4500 3950
+Connection ~ 4500 3350
+Wire Wire Line
+	4500 3950 4350 3950
+Wire Wire Line
+	4500 1750 4500 2350
+Wire Wire Line
+	3850 3950 4150 3950
+Wire Wire Line
+	3850 3350 3900 3350
+Wire Wire Line
+	3850 3150 4150 3150
+Wire Wire Line
+	3850 2350 4150 2350
+Wire Wire Line
+	3850 1750 3900 1750
+$Comp
+L Device:R R?
+U 1 1 6521D46A
+P 3700 3350
+F 0 "R?" V 3493 3350 50  0000 C CNN
+F 1 "10000" V 3584 3350 50  0000 C CNN
+F 2 "" V 3630 3350 50  0001 C CNN
+F 3 "~" H 3700 3350 50  0001 C CNN
+	1    3700 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6521D464
+P 3700 3150
+F 0 "R?" V 3493 3150 50  0000 C CNN
+F 1 "100" V 3584 3150 50  0000 C CNN
+F 2 "" V 3630 3150 50  0001 C CNN
+F 3 "~" H 3700 3150 50  0001 C CNN
+	1    3700 3150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6521B910
+P 3700 2550
+F 0 "R?" V 3493 2550 50  0000 C CNN
+F 1 "10000" V 3584 2550 50  0000 C CNN
+F 2 "" V 3630 2550 50  0001 C CNN
+F 3 "~" H 3700 2550 50  0001 C CNN
+	1    3700 2550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6521B24C
+P 3700 2350
+F 0 "R?" V 3493 2350 50  0000 C CNN
+F 1 "100" V 3584 2350 50  0000 C CNN
+F 2 "" V 3630 2350 50  0001 C CNN
+F 3 "~" H 3700 2350 50  0001 C CNN
+	1    3700 2350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6521935C
+P 3700 1750
+F 0 "R?" V 3493 1750 50  0000 C CNN
+F 1 "10000" V 3584 1750 50  0000 C CNN
+F 2 "" V 3630 1750 50  0001 C CNN
+F 3 "~" H 3700 1750 50  0001 C CNN
+	1    3700 1750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3000 3250 3000 3350
+Wire Wire Line
+	3000 2350 3000 2450
+$Comp
+L power:GND #PWR?
+U 1 1 652035F6
+P 3000 3350
+F 0 "#PWR?" H 3000 3100 50  0001 C CNN
+F 1 "GND" H 3005 3177 50  0000 C CNN
+F 2 "" H 3000 3350 50  0001 C CNN
+F 3 "" H 3000 3350 50  0001 C CNN
+	1    3000 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 65203004
+P 3000 2350
+F 0 "#PWR?" H 3000 2200 50  0001 C CNN
+F 1 "+5V" H 3015 2523 50  0000 C CNN
+F 2 "" H 3000 2350 50  0001 C CNN
+F 3 "" H 3000 2350 50  0001 C CNN
+	1    3000 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:DB9_Male J?
+U 1 1 652024AA
+P 2700 2850
+F 0 "J?" H 2618 2158 50  0000 C CNN
+F 1 "DB9_Male" H 2618 2249 50  0000 C CNN
+F 2 "" H 2700 2850 50  0001 C CNN
+F 3 " ~" H 2700 2850 50  0001 C CNN
+	1    2700 2850
+	-1   0    0    1   
+$EndComp
+$Comp
+L Sensor_Proximity:ITR8307-F43 U?
+U 1 1 651FF6F2
+P 4250 2050
+F 0 "U?" H 4250 2367 50  0000 C CNN
+F 1 "trct5000" H 4250 2276 50  0000 C CNN
+F 2 "linefollower:TCRT5000" H 4250 1850 50  0001 C CNN
+F 3 "https://everlighteurope.com/index.php?controller=attachment&id_attachment=5385" H 4250 2150 50  0001 C CNN
+	1    4250 2050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Sensor_Proximity:ITR8307-F43 U?
+U 1 1 651FF0D0
+P 4250 2850
+F 0 "U?" H 4250 3167 50  0000 C CNN
+F 1 "trct5000" H 4250 3076 50  0000 C CNN
+F 2 "linefollower:TCRT5000" H 4250 2650 50  0001 C CNN
+F 3 "https://everlighteurope.com/index.php?controller=attachment&id_attachment=5385" H 4250 2950 50  0001 C CNN
+	1    4250 2850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Sensor_Proximity:ITR8307-F43 U?
+U 1 1 651FDF48
+P 4250 3650
+F 0 "U?" H 4250 3967 50  0000 C CNN
+F 1 "trct5000" H 4250 3876 50  0000 C CNN
+F 2 "linefollower:TCRT5000" H 4250 3450 50  0001 C CNN
+F 3 "https://everlighteurope.com/index.php?controller=attachment&id_attachment=5385" H 4250 3750 50  0001 C CNN
+	1    4250 3650
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4350 3350 4500 3350
+Wire Wire Line
+	3900 3350 4150 3350
+Wire Wire Line
+	4350 2550 4500 2550
+Wire Wire Line
+	3900 2550 4150 2550
+Wire Wire Line
+	4350 1750 4500 1750
+Wire Wire Line
+	3900 1750 4150 1750
+Wire Wire Line
+	3400 2350 3400 2550
+Wire Wire Line
+	3000 3150 3300 3150
+Wire Wire Line
+	3300 3150 3300 3450
+Wire Wire Line
+	3000 2950 3900 2950
+Wire Wire Line
+	3000 2750 3300 2750
+Wire Wire Line
+	3550 2550 3400 2550
+Wire Wire Line
+	3400 2550 3000 2550
+Wire Wire Line
+	3300 1850 3300 2750
+Wire Wire Line
+	3900 2550 3900 2950
+Wire Wire Line
+	3000 3250 3200 3250
+Wire Wire Line
+	3200 3250 3200 4050
+Wire Wire Line
+	3200 4050 4500 4050
+Wire Wire Line
+	4500 4050 4500 3950
+Connection ~ 3000 3250
+Connection ~ 4500 3950
+$Comp
+L Device:R R?
+U 1 1 652679E6
+P 3700 3950
+F 0 "R?" V 3493 3950 50  0000 C CNN
+F 1 "100" V 3584 3950 50  0000 C CNN
+F 2 "" V 3630 3950 50  0001 C CNN
+F 3 "~" H 3700 3950 50  0001 C CNN
+	1    3700 3950
+	0    1    1    0   
+$EndComp
+$EndSCHEMATC
